@@ -1,20 +1,26 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, text, div, h1, img)
-import Html.Attributes exposing (src)
+import Html exposing (Html, button, div, h1, img, text)
+import Html.Attributes exposing (class, src)
+import Html.Events exposing (onClick)
+
 
 
 ---- MODEL ----
 
 
 type alias Model =
-    {}
+    { name : String
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( { name = "Steve the helpless drum"
+      }
+    , Cmd.none
+    )
 
 
 
@@ -22,12 +28,22 @@ init =
 
 
 type Msg
-    = NoOp
+    = ButtonClicked
+    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        ButtonClicked ->
+            let
+                nextName =
+                    model.name ++ "m"
+            in
+            ( { model | name = nextName }, Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 
@@ -38,7 +54,8 @@ view : Model -> Html Msg
 view model =
     div []
         [ img [ src "/logo.svg" ] []
-        , h1 [] [ text "Your Elm App is working!" ]
+        , h1 [] [ text model.name ]
+        , button [ class "red-button", onClick ButtonClicked ] [ text "+" ]
         ]
 
 
